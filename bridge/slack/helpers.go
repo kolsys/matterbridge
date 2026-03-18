@@ -101,7 +101,7 @@ func (b *Bslack) populateMessageWithBotInfo(ev *slack.MessageEvent, rmsg *config
 	var err error
 	var bot *slack.Bot
 	for {
-		bot, err = b.rtm.GetBotInfo(slack.GetBotInfoParameters{
+		bot, err = b.sc.GetBotInfo(slack.GetBotInfoParameters{
 			Bot: ev.BotID,
 		})
 		if err == nil {
