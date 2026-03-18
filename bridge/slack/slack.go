@@ -118,14 +118,13 @@ func (b *Bslack) Connect() error {
 		b.channels = newChannelManager(b.Log, b.sc)
 		b.users = newUserManager(b.Log, b.sc)
 
-		b.rtm = b.sc.NewRTM()
-
 		if appToken != "" {
 			b.smc = socketmode.New(
 				b.sc,
 				socketmode.OptionDebug(b.GetBool("Debug")),
 			)
 		} else {
+			b.rtm = b.sc.NewRTM()
 			go b.rtm.ManageConnection()
 		}
 		go b.handleSlack()

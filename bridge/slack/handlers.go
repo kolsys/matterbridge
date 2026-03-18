@@ -63,7 +63,7 @@ func (b *Bslack) handleSlackClientSocketMode(messages chan *config.Message) {
 			b.Log.Debug("Connection failed. Retrying later...")
 		case socketmode.EventTypeConnected:
 			b.Log.Debug("Connected to Slack with Socket Mode.")
-			if info, err := b.rtm.AuthTest(); err == nil {
+			if info, err := b.sc.AuthTest(); err == nil {
 				b.si = &slack.Info {
 					User: &slack.UserDetails{
 						ID: info.UserID,
@@ -270,7 +270,7 @@ func (b *Bslack) skipMessageEvent(ev *slack.MessageEvent) bool {
 		return true
 	case sChannelTopic, sChannelPurpose:
 		// Skip the event if our bot/user account changed the topic/purpose
-		if ev.User == b.si.User.ID {
+		if b.si != nil && ev.User == b.si.User.ID {
 			return true
 		}
 	}
